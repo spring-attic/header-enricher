@@ -32,11 +32,11 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.integration.test.matcher.HeaderMatcher;
 import org.springframework.messaging.Message;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -45,12 +45,9 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author Gary Russell
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.NONE,
-	properties = { 	"headerenricher.headers={\"foo\" : \"'bar'\", \"baz\" : \"'fiz'\", \"buz\" : \"payload\", "
-						+ "\"jaz\" : \"@value\" }",
-					"headerenricher.overwrite = true" })
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 @DirtiesContext
-public class HeaderEnricherProcessorIntegrationTests {
+public abstract class HeaderEnricherProcessorIntegrationTests {
 
 	@Autowired
 	protected Processor channels;
@@ -58,8 +55,7 @@ public class HeaderEnricherProcessorIntegrationTests {
 	@Autowired
 	protected MessageCollector collector;
 
-	@Test
-	public void test() throws Exception {
+	protected void doTest() throws InterruptedException {
 		this.channels.input().send(MessageBuilder.withPayload("hello").setHeader("baz", "qux").build());
 		Message<?> out = this.collector.forChannel(this.channels.output()).poll(10, TimeUnit.SECONDS);
 		assertThat(out, notNullValue());
@@ -69,8 +65,32 @@ public class HeaderEnricherProcessorIntegrationTests {
 		assertThat(out, HeaderMatcher.hasHeader("jaz", equalTo("beanValue")));
 	}
 
+	@TestPropertySource(properties = {
+			"header.enricher.headers={\"foo\" : \"'bar'\", \"baz\" : \"'fiz'\", \"buz\" : \"payload\", "
+						+ "\"jaz\" : \"@value\" }",
+			"header.enricher.overwrite = true" })
+	public static class JsonPropertiesTests extends HeaderEnricherProcessorIntegrationTests {
+
+		@Test
+		public void test() throws Exception {
+			doTest();
+		}
+
+	}
+
+	@TestPropertySource(properties = {
+			"header.enricher.headers=foo='bar' \\n baz='fiz' \\n buz=payload \\n jaz=@value",
+			"header.enricher.overwrite = true" })
+	public static class SimplePropertiesTests extends HeaderEnricherProcessorIntegrationTests {
+
+		@Test
+		public void test() throws Exception {
+			doTest();
+		}
+
+	}
+
 	@SpringBootApplication
-	@Import(HeaderEnricherProcessorConfiguration.class)
 	public static class HeaderEnricherProcessorApplication {
 
 		@Bean

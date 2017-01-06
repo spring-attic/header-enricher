@@ -19,15 +19,15 @@ package org.springframework.cloud.stream.app.headerenricher.processor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Configuration properties for the Header Enricher Processor module.
+ * Configuration properties for the Header Enricher Processor application.
  *
  * @author Gary Russell
  */
-@ConfigurationProperties("headerenricher")
+@ConfigurationProperties("header.enricher")
 public class HeaderEnricherProcessorProperties {
 
 	/**
-	 * a JSON map document representing headers in which values are SpEL expressions, e.g {"h1":"exp1","h2":"exp2"}
+	 * a JSON map document or properties representing headers in which values are SpEL expressions, e.g {"h1":"exp1","h2":"exp2"} or foo=bar\nbaz=qux
 	 */
 	private String headers;
 

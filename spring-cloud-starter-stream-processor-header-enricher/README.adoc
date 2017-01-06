@@ -10,7 +10,7 @@ For example `--headers='{ "foo" : "payload.someProperty", "bar" : "payload.other
 The **$$header-enricher$$** $$processor$$ has the following options:
 
 //tag::configuration-properties[]
-$$headerenricher.headers$$:: $$a JSON map document representing headers in which values are SpEL expressions$$ *($$String$$, default: none)*
+$$headerenricher.headers$$:: $$a JSON map document or \n separated properties representing headers in which values are SpEL expressions, e.g. foo=bar\nbaz=qux or { "foo" : "bar", "baz", "qux" }$$ *($$String$$, default: none)*
 $$headerenricher.overwrite$$:: $$set to true to overwrite any existing message headers$$ *($$boolean$$, default: `false`)*
 //end::configuration-properties[]
 
