@@ -1,6 +1,6 @@
 //tag::ref-doc[]
 = Header Enricher Processor
-Use the header-enricher app in a stream to add message headers.
+Use the header-enricher app to add message headers.
 
 The headers are provided in the form of a JSON map document, where the keys are the header names and the values are SpEL expressions.
 For example `--headers='{ "foo" : "payload.someProperty", "bar" : "payload.otherProperty" }'`
@@ -10,7 +10,7 @@ For example `--headers='{ "foo" : "payload.someProperty", "bar" : "payload.other
 The **$$header-enricher$$** $$processor$$ has the following options:
 
 //tag::configuration-properties[]
-$$headerenricher.headers$$:: $$a JSON map document or \n separated properties representing headers in which values are SpEL expressions, e.g. foo=bar\nbaz=qux or { "foo" : "bar", "baz", "qux" }$$ *($$String$$, default: none)*
+$$headerenricher.headers$$:: $$a JSON map document or \n separated properties representing headers in which values are SpEL expressions, e.g. foo='bar'\nbaz=payload.baz or { "foo" : "'bar'", "baz", "payload.baz" }$$ *($$String$$, default: none)*
 $$headerenricher.overwrite$$:: $$set to true to overwrite any existing message headers$$ *($$boolean$$, default: `false`)*
 //end::configuration-properties[]
 

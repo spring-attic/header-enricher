@@ -27,7 +27,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class HeaderEnricherProcessorProperties {
 
 	/**
-	 * a JSON map document or properties representing headers in which values are SpEL expressions, e.g {"h1":"exp1","h2":"exp2"} or foo=bar\nbaz=qux
+	 * a JSON map document or properties representing headers in which values are SpEL expressions, e.g {"h1":"exp1","h2":"exp2"} or foo='bar'\nbaz=payload.baz
 	 */
 	private String headers;
 
