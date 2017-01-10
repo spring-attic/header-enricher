@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.stream.app.headerenricher.processor;
 
+import java.util.Properties;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -29,18 +31,18 @@ public class HeaderEnricherProcessorProperties {
 	/**
 	 * \n separated properties representing headers in which values are SpEL expressions, e.g foo='bar' \n baz=payload.baz
 	 */
-	private String headers;
+	private Properties headers;
 
 	/**
 	 *  set to true to overwrite any existing message headers
 	 */
 	private boolean overwrite = false;
 
-	public String getHeaders() {
+	public Properties getHeaders() {
 		return this.headers;
 	}
 
-	public void setHeaders(String headers) {
+	public void setHeaders(Properties headers) {
 		this.headers = headers;
 	}
 

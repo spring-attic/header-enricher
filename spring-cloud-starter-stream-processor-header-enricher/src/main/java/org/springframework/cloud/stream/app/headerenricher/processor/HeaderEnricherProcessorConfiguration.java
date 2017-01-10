@@ -28,12 +28,9 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.transformer.HeaderEnricher;
 import org.springframework.integration.transformer.support.ExpressionEvaluatingHeaderValueMessageProcessor;
-import org.springframework.util.StringUtils;
 
 /**
  * A Processor app that adds expression-evaluated headers.
@@ -51,16 +48,11 @@ public class HeaderEnricherProcessorConfiguration {
 	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
 	public HeaderEnricher headerEnricher() throws Exception {
 		Map<String, ExpressionEvaluatingHeaderValueMessageProcessor<?>> headersToAdd = new HashMap<>();
-		if (StringUtils.hasText(this.properties.getHeaders())) {
-			ConversionService conversionService = new DefaultConversionService();
-			if (conversionService.canConvert(String.class, Properties.class)) {
-				Properties props = conversionService.convert(this.properties.getHeaders(), Properties.class);
-				Enumeration<?> enumeration = props.propertyNames();
-				while (enumeration.hasMoreElements()) {
-					String propertyName = (String) enumeration.nextElement();
-					headersToAdd.put(propertyName, processor(props.getProperty(propertyName)));
-				}
-			}
+		Properties props = this.properties.getHeaders();
+		Enumeration<?> enumeration = props.propertyNames();
+		while (enumeration.hasMoreElements()) {
+			String propertyName = (String) enumeration.nextElement();
+			headersToAdd.put(propertyName, processor(props.getProperty(propertyName)));
 		}
 		HeaderEnricher headerEnricher = new HeaderEnricher(headersToAdd);
 		headerEnricher.setDefaultOverwrite(this.properties.isOverwrite());
