@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.app.headerenricher.processor;
+package org.springframework.cloud.stream.app.header.enricher.processor;
 
 import java.util.Enumeration;
 import java.util.HashMap;
