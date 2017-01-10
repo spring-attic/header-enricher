@@ -66,19 +66,6 @@ public abstract class HeaderEnricherProcessorIntegrationTests {
 	}
 
 	@TestPropertySource(properties = {
-			"header.enricher.headers={\"foo\" : \"'bar'\", \"baz\" : \"'fiz'\", \"buz\" : \"payload\", "
-						+ "\"jaz\" : \"@value\" }",
-			"header.enricher.overwrite = true" })
-	public static class JsonPropertiesTests extends HeaderEnricherProcessorIntegrationTests {
-
-		@Test
-		public void test() throws Exception {
-			doTest();
-		}
-
-	}
-
-	@TestPropertySource(properties = {
 			"header.enricher.headers=foo='bar' \\n baz='fiz' \\n buz=payload \\n jaz=@value",
 			"header.enricher.overwrite = true" })
 	public static class SimplePropertiesTests extends HeaderEnricherProcessorIntegrationTests {

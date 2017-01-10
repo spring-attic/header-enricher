@@ -19,13 +19,11 @@ package org.springframework.cloud.stream.app.headerenricher.processor;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +33,6 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.transformer.HeaderEnricher;
 import org.springframework.integration.transformer.support.ExpressionEvaluatingHeaderValueMessageProcessor;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
@@ -55,21 +52,13 @@ public class HeaderEnricherProcessorConfiguration {
 	public HeaderEnricher headerEnricher() throws Exception {
 		Map<String, ExpressionEvaluatingHeaderValueMessageProcessor<?>> headersToAdd = new HashMap<>();
 		if (StringUtils.hasText(this.properties.getHeaders())) {
-			try {
-				Map<String, Object> headers = JsonParserFactory.getJsonParser().parseMap(this.properties.getHeaders());
-				for (Entry<String, Object> entry : headers.entrySet()) {
-					headersToAdd.put(entry.getKey(), processor(entry.getValue()));
-				}
-			}
-			catch (Exception e) {
-				ConversionService conversionService = new DefaultConversionService();
-				if (conversionService.canConvert(String.class, Properties.class)) {
-					Properties props = conversionService.convert(this.properties.getHeaders(), Properties.class);
-					Enumeration<?> enumeration = props.propertyNames();
-					while (enumeration.hasMoreElements()) {
-						String propertyName = (String) enumeration.nextElement();
-						headersToAdd.put(propertyName, processor(props.getProperty(propertyName)));
-					}
+			ConversionService conversionService = new DefaultConversionService();
+			if (conversionService.canConvert(String.class, Properties.class)) {
+				Properties props = conversionService.convert(this.properties.getHeaders(), Properties.class);
+				Enumeration<?> enumeration = props.propertyNames();
+				while (enumeration.hasMoreElements()) {
+					String propertyName = (String) enumeration.nextElement();
+					headersToAdd.put(propertyName, processor(props.getProperty(propertyName)));
 				}
 			}
 		}
@@ -80,9 +69,8 @@ public class HeaderEnricherProcessorConfiguration {
 
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) // Need a new processor for each header
-	public ExpressionEvaluatingHeaderValueMessageProcessor<?> processor(Object expression) {
-		Assert.isInstanceOf(String.class, expression);
-		return new ExpressionEvaluatingHeaderValueMessageProcessor<>((String) expression, null);
+	public ExpressionEvaluatingHeaderValueMessageProcessor<?> processor(String expression) {
+		return new ExpressionEvaluatingHeaderValueMessageProcessor<>(expression, null);
 	}
 
 }
