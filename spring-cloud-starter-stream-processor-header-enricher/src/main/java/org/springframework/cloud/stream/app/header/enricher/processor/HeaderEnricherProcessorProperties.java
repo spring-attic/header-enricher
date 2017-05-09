@@ -18,14 +18,19 @@ package org.springframework.cloud.stream.app.header.enricher.processor;
 
 import java.util.Properties;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Configuration properties for the Header Enricher Processor application.
  *
  * @author Gary Russell
+ * @author Artem Bilan
  */
 @ConfigurationProperties("header.enricher")
+@Validated
 public class HeaderEnricherProcessorProperties {
 
 	/**
@@ -38,6 +43,7 @@ public class HeaderEnricherProcessorProperties {
 	 */
 	private boolean overwrite = false;
 
+	@NotNull
 	public Properties getHeaders() {
 		return this.headers;
 	}
