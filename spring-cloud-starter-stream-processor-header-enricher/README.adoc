@@ -2,7 +2,7 @@
 = Header Enricher Processor
 Use the header-enricher app to add message headers.
 
-The headers are provided in the form of a JSON map document, where the keys are the header names and the values are SpEL expressions.
+The headers are provided in the form of new line delimited key value pairs, where the keys are the header names and the values are SpEL expressions.
 For example `--headers='foo=payload.someProperty \n bar=payload.otherProperty'`
 
 == Options
