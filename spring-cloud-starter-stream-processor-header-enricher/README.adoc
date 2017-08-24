@@ -1,9 +1,30 @@
 //tag::ref-doc[]
 = Header Enricher Processor
+
 Use the header-enricher app to add message headers.
 
 The headers are provided in the form of new line delimited key value pairs, where the keys are the header names and the values are SpEL expressions.
 For example `--headers='foo=payload.someProperty \n bar=payload.otherProperty'`
+
+== Input
+
+=== Headers
+
+N/A
+
+=== Payload
+
+* Any
+
+== Output
+
+=== Headers
+
+N/A
+
+=== Payload
+
+* Any
 
 == Options
 
@@ -15,10 +36,22 @@ $$header.enricher.overwrite$$:: $$set to true to overwrite any existing message 
 //end::configuration-properties[]
 
 //end::ref-doc[]
-== Building with Maven
+== Build
 
 ```
-$> mvn package
+$ ./mvnw clean install -PgenerateApps
+$ cd apps
+```
+You can find the corresponding binder based projects here.
+You can then cd into one one of the folders and build it:
+```
+$ ./mvnw clean package
+```
+
+== Examples
+
+```
+java -jar header-enricher-processor.jar --headers='foo=payload.someProperty \n bar=payload.otherProperty'
 ```
 
 == Code of Conduct
