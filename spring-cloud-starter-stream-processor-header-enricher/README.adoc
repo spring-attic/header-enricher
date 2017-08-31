@@ -35,7 +35,6 @@ $$header.enricher.headers$$:: $$\n separated properties representing headers in 
 $$header.enricher.overwrite$$:: $$set to true to overwrite any existing message headers$$ *($$Boolean$$, default: `$$false$$`)*
 //end::configuration-properties[]
 
-//end::ref-doc[]
 == Build
 
 ```
@@ -56,3 +55,5 @@ java -jar header-enricher-processor.jar --headers='foo=payload.someProperty \n b
 
 == Code of Conduct
 This project adheres to the Contributor Covenant link:CODE_OF_CONDUCT.adoc[code of conduct]. By participating, you  are expected to uphold this code. Please report unacceptable behavior to spring-code-of-conduct@pivotal.io.
+
+//end::ref-doc[]
