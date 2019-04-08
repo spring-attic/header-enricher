@@ -56,7 +56,8 @@ public abstract class HeaderEnricherProcessorIntegrationTests {
 	protected MessageCollector collector;
 
 	protected void doTest() throws InterruptedException {
-		this.channels.input().send(MessageBuilder.withPayload("hello").setHeader("baz", "qux").build());
+		this.channels.input().send(MessageBuilder.withPayload("hello".getBytes())
+				.setHeader("baz", "qux").build());
 		Message<?> out = this.collector.forChannel(this.channels.output()).poll(10, TimeUnit.SECONDS);
 		assertThat(out, notNullValue());
 		assertThat(out, HeaderMatcher.hasHeader("foo", equalTo("bar")));
